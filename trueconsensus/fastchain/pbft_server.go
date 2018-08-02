@@ -27,7 +27,6 @@ import (
 	pb "trueconsensus/fastchain/proto"
 
 	"google.golang.org/grpc"
-	// "trueconsensus/fastchain"
 )
 
 // Server defines the base properties of a pbft node server
@@ -39,6 +38,8 @@ type Server struct {
 	committed chan bool
 }
 
+// fastChainServer is a gRPC servicer method which acts as
+// a placeholder for rpc calls in protobuf (FastChain service)
 type fastChainServer struct {
 	pbftSv *Server
 }
@@ -49,15 +50,15 @@ func (sv *Server) Start() {
 }
 
 // NewTxnRequest handles transaction requests from clients
-func (sv *fastChainServer) NewTxnRequest(ctx context.Context, txnReq *pb.Transaction) (*pb.GenericResp, error) {
-	common.MyPrint(4, "Received new transacion request %d from client on node %d", txnReq.Data.AccountNonce, sv.pbftSv.Nd.ID)
+func (fsv *fastChainServer) NewTxnRequest(ctx context.Context, txnReq *pb.Transaction) (*pb.GenericResp, error) {
+	common.MyPrint(4, "Received new transacion request %d from client on node %d", txnReq.Data.AccountNonce, fsv.pbftSv.Nd.ID)
 
 	// Discard already known transactions
-	if sv.pbftSv.Nd.txPool.all.Get(common.BytesToHash(txnReq.Data.Hash)) != nil {
+	if fsv.pbftSv.Nd.txPool.all.Get(common.BytesToHash(txnReq.Data.Hash)) != nil {
 		return &pb.GenericResp{Msg: "Already known transaction. Ignoring transaction request."}, errors.New("Transaction already exists in pool")
 	}
 
-	sender, ok := VerifySender(txnReq, sv.pbftSv.Cfg.Network.N)
+	sender, ok := fsv.pbftSv.Nd.VerifySender(txnReq)
 	if ok {
 		common.MyPrint(0, "Transaction sender verified")
 	} else {
@@ -65,10 +66,10 @@ func (sv *fastChainServer) NewTxnRequest(ctx context.Context, txnReq *pb.Transac
 		return &pb.GenericResp{Msg: "Transaction verification failed"}, errors.New("Invalid transaction request")
 	}
 
-	sv.pbftSv.Nd.txPool.Add(txnReq, sender)
-	common.MyPrint(4, "Added request %d to transaction pool on node %d.", txnReq.Data.AccountNonce, sv.pbftSv.Nd.ID)
+	fsv.pbftSv.Nd.txPool.Add(txnReq, sender)
+	common.MyPrint(4, "Added request %d to transaction pool on node %d.", txnReq.Data.AccountNonce, fsv.pbftSv.Nd.ID)
 
-	return &pb.GenericResp{Msg: fmt.Sprintf("Transaction request %d received in node %d", txnReq.Data.AccountNonce, sv.pbftSv.Nd.ID)}, nil
+	return &pb.GenericResp{Msg: fmt.Sprintf("Transaction request %d received in node %d", txnReq.Data.AccountNonce, fsv.pbftSv.Nd.ID)}, nil
 }
 
 // RegisterPbftGrpcListener listens to client for new transaction requests on grpcPort

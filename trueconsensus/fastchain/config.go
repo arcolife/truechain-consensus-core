@@ -106,7 +106,7 @@ type Logistics struct {
 
 // Network - generic struct used by each node to interact with connection pool details
 type Network struct {
-	N         int      // number of nodes to be launchedt
+	N         int      // number of nodes to be launched
 	IPList    []string // stores list of IP addresses belonging to BFT nodes
 	Ports     []int    // stores list of Ports belonging to BFT nodes
 	GrpcPorts []int    // stores list of ports serving grpc requests

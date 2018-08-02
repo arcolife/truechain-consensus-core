@@ -760,16 +760,15 @@ func (nd *Node) checkCommittedMargin(dig DigType, req Request) bool {
 	return false
 }
 
-// VerifySender verifies transaction sender by matching public key obtained from transaction signature with expected public key
-// TODO This should match sender addresses later
-func VerifySender(tx *pb.Transaction, n int) ([]byte, bool) {
+// VerifySender verifies transaction sender by matching public key
+// obtained from transaction signature with expected public key
+func (nd *Node) VerifySender(tx *pb.Transaction) ([]byte, bool) {
 	sig := tx.Data.Signature
 	txPubkey, _ := ethcrypto.Ecrecover(tx.Data.Hash, sig)
 
-	cfg := GetPbftConfig()
-	pubKeyFile := fmt.Sprintf("sign%v.pub", n)
+	pubKeyFile := fmt.Sprintf("sign%v.pub", nd.cfg.Network.N)
 	fmt.Println("fetching file: ", pubKeyFile)
-	pubKey, _ := common.FetchPublicKeyBytes(path.Join(cfg.Logistics.KD, pubKeyFile))
+	pubKey, _ := common.FetchPublicKeyBytes(path.Join(nd.cfg.Logistics.KD, pubKeyFile))
 
 	if bytes.Equal(txPubkey, pubKey) {
 		return pubKey, true
@@ -781,7 +780,7 @@ func VerifySender(tx *pb.Transaction, n int) ([]byte, bool) {
 // VerifyBlockTxs verifies transactions in a block by checking sender and account nonce
 func (nd *Node) VerifyBlockTxs(blk *pb.PbftBlock) bool {
 	for _, tx := range blk.Txns {
-		if _, ok := VerifySender(tx, nd.cfg.Network.N); !ok { // Verify if tx came from client
+		if _, ok := nd.VerifySender(tx); !ok { // Verify if tx came from client
 			return false
 		}
 

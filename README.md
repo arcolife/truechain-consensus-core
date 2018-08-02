@@ -73,7 +73,7 @@ And before running, make sure you have the following taken care of, for orchestr
 4. `TRUE_SIMULATION` is as follows:
   - if set to 0 (default) - should tell the project to pickup testbed configurations. 
   - if set to 1 - staging, meaning all CI/CD tests are run before draft run. (dummy functionality at the moment)
-  - if set to 1 - production. Will try to connect to boot nodes. (dummy functionality at the moment)
+  - if set to 2 - production. Will try to connect to boot nodes. (dummy functionality at the moment)
 
 ### Run
 
