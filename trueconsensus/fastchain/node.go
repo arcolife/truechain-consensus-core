@@ -284,6 +284,10 @@ func (nd *Node) createRequest(reqType int, seq int, msg MsgType, block *pb.PbftB
 // AddSig signs message with private key of node
 func (req *Request) AddSig(privKey *ecdsa.PrivateKey) {
 	//common.MyPrint(1, "adding signature.\n")
+	// RequestInner isn't a protocol buffer thing at the moment
+	// nodes talk to each other through RPC and not gRPC.
+	// This should be changed in future to gRPC so that there's no need
+	// to gob it up as serialization is taken care of, de-facto.
 	gob.Register(&RequestInner{})
 	b := bytes.Buffer{}
 	e := gob.NewEncoder(&b)
@@ -293,11 +297,12 @@ func (req *Request) AddSig(privKey *ecdsa.PrivateKey) {
 		return
 	}
 
-	s := GetHash(string(b.Bytes()))
-	common.MyPrint(1, "digest %s.\n", string(s))
-	req.Dig = DigType(s)
+	dig := GetHash(string(b.Bytes())) // assigns string type
+	common.MyPrint(1, "digest %s.\n", string(dig))
+	req.Dig = DigType(dig)
 	if privKey != nil {
-		sigr, sigs, err := ecdsa.Sign(rand.Reader, privKey, []byte(s))
+		// ecdsa.Sign opens a buffer, reads the privatekey
+		sigr, sigs, err := ecdsa.Sign(rand.Reader, privKey, []byte(dig))
 		if err != nil {
 			common.MyPrint(3, "%s", "Error signing.")
 			return
@@ -765,6 +770,20 @@ func (nd *Node) checkCommittedMargin(dig DigType, req Request) bool {
 func (nd *Node) VerifySender(tx *pb.Transaction) ([]byte, bool) {
 	sig := tx.Data.Signature
 	txPubkey, _ := ethcrypto.Ecrecover(tx.Data.Hash, sig)
+
+	// TODO: instead of fetching for Network.N, just check if hash of 'message' &
+	// 'from' is the LSB side 20 bytes of the recovered pub key (32 bytes)
+	// pool.CurrentState.GetNonce/Balance(from) -> this means that
+	// `from` address is already present in the pool when the account was
+	// created and confirmed over the chain first time.
+	// we don't need to verify sender, we need to validate that (change VerifySender -> ValidateTx)
+	// 1. we can recover pub key
+	// 2. we can verify consistency of nonce, balance, payload size checks out
+	// for more, check:-
+	// 1. go-ethereum/core/tx_pool.go
+	// 2. go-ethereum/core/types/transaction_signing.go
+
+	// this is dependent on statedb impl and accounts/banks integration attempts
 
 	pubKeyFile := fmt.Sprintf("sign%v.pub", nd.cfg.Network.N)
 	fmt.Println("fetching file: ", pubKeyFile)
