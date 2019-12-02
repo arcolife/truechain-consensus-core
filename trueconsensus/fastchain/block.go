@@ -19,7 +19,7 @@ package pbft
 import (
 	"time"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 )
 
 // NewPbftBlockHeader creates and returns a new block header

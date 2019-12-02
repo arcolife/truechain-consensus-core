@@ -14,8 +14,6 @@ bin/
 .DS_Store
 .project
 .hmake
-vendor/
-!vendor/manifest
 
 ## golang dlv / build
 engine

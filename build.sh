@@ -4,10 +4,12 @@ export GOARCH=amd64
 export GOOS=$(go env GOOS)
 
 export CGO_ENABLED=1
-export GOPATH=${PWD}
+# export GOPATH=${PWD}
 
 OUTDIR="bin/$GOOS"
 mkdir -p "$OUTDIR"
+
+# go mod init trueconsensus
 
 git_commit_hash() {
     echo $(git rev-parse --short HEAD)

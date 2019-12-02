@@ -3,7 +3,7 @@
 #
 # Released under the MIT license.
 
-FROM ubuntu:16.04
+FROM ubuntu:bionic
 
 MAINTAINER Chen Xi <xichen0425@gmail.com>
 

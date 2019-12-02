@@ -25,7 +25,7 @@ import (
 	"os"
 	"path"
 	"strings"
-	"trueconsensus/common"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 )
 
 const (

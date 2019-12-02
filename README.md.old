@@ -9,14 +9,59 @@ TrueChain Consensus Protocol
 
 ## Build
 
+### Step 1
+
+Install [Docker](https://docs.docker.com/install/) and [HyperMake](http://evo-cloud.github.io/hmake/quickguide/install/).
+
+Make sure you have hmake in your `$GOBIN` path.
+
+#### Building it all with hmake and docker
+
+This project uses:
+
+- [HyperMake](https://github.com/evo-cloud/hmake) to interact with toolchain (containerized environment) and build cross-platform binaries.
+- `gvt` to manage dependencies.
+
+
+```
+$ hmake --targets
+$ hmake check
+$ hmake build
+```
+
+The first time, it would download:
+
+- TrueChain's docker image `go-toolchain` from https://hub.docker.com/r/truechain/go-toolchain/
+- Dependencies as per `src/vendor/manifest`, which again, could be generated using [gvt](https://github.com/FiloSottile/gvt).
+
+The binaries would be available in `bin/`'s platform-specific folders.
+
+
+### Step 2
+
 ```
 git clone https://github.com/truechain/truechain-consensus-core.git
 cd truechain-consensus-core
-go mod init github.com/truechain/truechain-consensus-core
-./build.sh
+git checkout devel
 ```
 
-Make sure you have the following taken care of:
+OR
+
+```
+go get -u github.com/truechain/truechain-consensus-core
+```
+
+
+### Step 3
+
+Make sure you have `$GOBIN` in `$PATH`:
+
+```
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+```
+
+And before running, make sure you have the following taken care of, for orchestration:
 
 1. `TRUE_TUNABLES_CONF` corresponds to `/etc/truechain/tunables_bft.yaml`, default's under project's `config/` folder.
 

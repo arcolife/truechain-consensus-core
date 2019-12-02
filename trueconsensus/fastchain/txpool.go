@@ -19,8 +19,8 @@ package pbft
 import (
 	"sync"
 
-	"trueconsensus/common"
-	pb "trueconsensus/fastchain/proto"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 )
 
 // TxPool defines the transaction pool

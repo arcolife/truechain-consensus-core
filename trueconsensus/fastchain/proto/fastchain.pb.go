@@ -3,13 +3,12 @@
 
 package fastchain
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-
 import (
-	context "golang.org/x/net/context"
+	context "context"
+	fmt "fmt"
+	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
+	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -36,16 +35,17 @@ func (m *Request) Reset()         { *m = Request{} }
 func (m *Request) String() string { return proto.CompactTextString(m) }
 func (*Request) ProtoMessage()    {}
 func (*Request) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{0}
+	return fileDescriptor_a2a6bde80318aa7d, []int{0}
 }
+
 func (m *Request) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Request.Unmarshal(m, b)
 }
 func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Request.Marshal(b, m, deterministic)
 }
-func (dst *Request) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Request.Merge(dst, src)
+func (m *Request) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Request.Merge(m, src)
 }
 func (m *Request) XXX_Size() int {
 	return xxx_messageInfo_Request.Size(m)
@@ -93,16 +93,17 @@ func (m *Request_Inner) Reset()         { *m = Request_Inner{} }
 func (m *Request_Inner) String() string { return proto.CompactTextString(m) }
 func (*Request_Inner) ProtoMessage()    {}
 func (*Request_Inner) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{0, 0}
+	return fileDescriptor_a2a6bde80318aa7d, []int{0, 0}
 }
+
 func (m *Request_Inner) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Request_Inner.Unmarshal(m, b)
 }
 func (m *Request_Inner) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Request_Inner.Marshal(b, m, deterministic)
 }
-func (dst *Request_Inner) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Request_Inner.Merge(dst, src)
+func (m *Request_Inner) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Request_Inner.Merge(m, src)
 }
 func (m *Request_Inner) XXX_Size() int {
 	return xxx_messageInfo_Request_Inner.Size(m)
@@ -168,16 +169,17 @@ func (m *PbftNode) Reset()         { *m = PbftNode{} }
 func (m *PbftNode) String() string { return proto.CompactTextString(m) }
 func (*PbftNode) ProtoMessage()    {}
 func (*PbftNode) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{1}
+	return fileDescriptor_a2a6bde80318aa7d, []int{1}
 }
+
 func (m *PbftNode) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PbftNode.Unmarshal(m, b)
 }
 func (m *PbftNode) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_PbftNode.Marshal(b, m, deterministic)
 }
-func (dst *PbftNode) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PbftNode.Merge(dst, src)
+func (m *PbftNode) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PbftNode.Merge(m, src)
 }
 func (m *PbftNode) XXX_Size() int {
 	return xxx_messageInfo_PbftNode.Size(m)
@@ -220,16 +222,17 @@ func (m *Nodes) Reset()         { *m = Nodes{} }
 func (m *Nodes) String() string { return proto.CompactTextString(m) }
 func (*Nodes) ProtoMessage()    {}
 func (*Nodes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{2}
+	return fileDescriptor_a2a6bde80318aa7d, []int{2}
 }
+
 func (m *Nodes) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Nodes.Unmarshal(m, b)
 }
 func (m *Nodes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Nodes.Marshal(b, m, deterministic)
 }
-func (dst *Nodes) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Nodes.Merge(dst, src)
+func (m *Nodes) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Nodes.Merge(m, src)
 }
 func (m *Nodes) XXX_Size() int {
 	return xxx_messageInfo_Nodes.Size(m)
@@ -265,16 +268,17 @@ func (m *TxnData) Reset()         { *m = TxnData{} }
 func (m *TxnData) String() string { return proto.CompactTextString(m) }
 func (*TxnData) ProtoMessage()    {}
 func (*TxnData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{3}
+	return fileDescriptor_a2a6bde80318aa7d, []int{3}
 }
+
 func (m *TxnData) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TxnData.Unmarshal(m, b)
 }
 func (m *TxnData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_TxnData.Marshal(b, m, deterministic)
 }
-func (dst *TxnData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TxnData.Merge(dst, src)
+func (m *TxnData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TxnData.Merge(m, src)
 }
 func (m *TxnData) XXX_Size() int {
 	return xxx_messageInfo_TxnData.Size(m)
@@ -352,16 +356,17 @@ func (m *Transaction) Reset()         { *m = Transaction{} }
 func (m *Transaction) String() string { return proto.CompactTextString(m) }
 func (*Transaction) ProtoMessage()    {}
 func (*Transaction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{4}
+	return fileDescriptor_a2a6bde80318aa7d, []int{4}
 }
+
 func (m *Transaction) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Transaction.Unmarshal(m, b)
 }
 func (m *Transaction) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_Transaction.Marshal(b, m, deterministic)
 }
-func (dst *Transaction) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Transaction.Merge(dst, src)
+func (m *Transaction) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Transaction.Merge(m, src)
 }
 func (m *Transaction) XXX_Size() int {
 	return xxx_messageInfo_Transaction.Size(m)
@@ -395,16 +400,17 @@ func (m *PbftBlockHeader) Reset()         { *m = PbftBlockHeader{} }
 func (m *PbftBlockHeader) String() string { return proto.CompactTextString(m) }
 func (*PbftBlockHeader) ProtoMessage()    {}
 func (*PbftBlockHeader) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{5}
+	return fileDescriptor_a2a6bde80318aa7d, []int{5}
 }
+
 func (m *PbftBlockHeader) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PbftBlockHeader.Unmarshal(m, b)
 }
 func (m *PbftBlockHeader) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_PbftBlockHeader.Marshal(b, m, deterministic)
 }
-func (dst *PbftBlockHeader) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PbftBlockHeader.Merge(dst, src)
+func (m *PbftBlockHeader) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PbftBlockHeader.Merge(m, src)
 }
 func (m *PbftBlockHeader) XXX_Size() int {
 	return xxx_messageInfo_PbftBlockHeader.Size(m)
@@ -470,16 +476,17 @@ func (m *PbftBlock) Reset()         { *m = PbftBlock{} }
 func (m *PbftBlock) String() string { return proto.CompactTextString(m) }
 func (*PbftBlock) ProtoMessage()    {}
 func (*PbftBlock) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{6}
+	return fileDescriptor_a2a6bde80318aa7d, []int{6}
 }
+
 func (m *PbftBlock) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PbftBlock.Unmarshal(m, b)
 }
 func (m *PbftBlock) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_PbftBlock.Marshal(b, m, deterministic)
 }
-func (dst *PbftBlock) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PbftBlock.Merge(dst, src)
+func (m *PbftBlock) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PbftBlock.Merge(m, src)
 }
 func (m *PbftBlock) XXX_Size() int {
 	return xxx_messageInfo_PbftBlock.Size(m)
@@ -523,16 +530,17 @@ func (m *TrueChain) Reset()         { *m = TrueChain{} }
 func (m *TrueChain) String() string { return proto.CompactTextString(m) }
 func (*TrueChain) ProtoMessage()    {}
 func (*TrueChain) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{7}
+	return fileDescriptor_a2a6bde80318aa7d, []int{7}
 }
+
 func (m *TrueChain) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TrueChain.Unmarshal(m, b)
 }
 func (m *TrueChain) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_TrueChain.Marshal(b, m, deterministic)
 }
-func (dst *TrueChain) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_TrueChain.Merge(dst, src)
+func (m *TrueChain) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_TrueChain.Merge(m, src)
 }
 func (m *TrueChain) XXX_Size() int {
 	return xxx_messageInfo_TrueChain.Size(m)
@@ -568,16 +576,17 @@ func (m *GenericResp) Reset()         { *m = GenericResp{} }
 func (m *GenericResp) String() string { return proto.CompactTextString(m) }
 func (*GenericResp) ProtoMessage()    {}
 func (*GenericResp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_fastchain_6f8a0e3b928a9c84, []int{8}
+	return fileDescriptor_a2a6bde80318aa7d, []int{8}
 }
+
 func (m *GenericResp) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GenericResp.Unmarshal(m, b)
 }
 func (m *GenericResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_GenericResp.Marshal(b, m, deterministic)
 }
-func (dst *GenericResp) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GenericResp.Merge(dst, src)
+func (m *GenericResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GenericResp.Merge(m, src)
 }
 func (m *GenericResp) XXX_Size() int {
 	return xxx_messageInfo_GenericResp.Size(m)
@@ -608,83 +617,9 @@ func init() {
 	proto.RegisterType((*GenericResp)(nil), "fastchain.GenericResp")
 }
 
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConn
+func init() { proto.RegisterFile("fastchain.proto", fileDescriptor_a2a6bde80318aa7d) }
 
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion4
-
-// FastChainClient is the client API for FastChain service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type FastChainClient interface {
-	// Send new transaction to presumed leader node
-	NewTxnRequest(ctx context.Context, in *Transaction, opts ...grpc.CallOption) (*GenericResp, error)
-}
-
-type fastChainClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewFastChainClient(cc *grpc.ClientConn) FastChainClient {
-	return &fastChainClient{cc}
-}
-
-func (c *fastChainClient) NewTxnRequest(ctx context.Context, in *Transaction, opts ...grpc.CallOption) (*GenericResp, error) {
-	out := new(GenericResp)
-	err := c.cc.Invoke(ctx, "/fastchain.FastChain/NewTxnRequest", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// FastChainServer is the server API for FastChain service.
-type FastChainServer interface {
-	// Send new transaction to presumed leader node
-	NewTxnRequest(context.Context, *Transaction) (*GenericResp, error)
-}
-
-func RegisterFastChainServer(s *grpc.Server, srv FastChainServer) {
-	s.RegisterService(&_FastChain_serviceDesc, srv)
-}
-
-func _FastChain_NewTxnRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Transaction)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FastChainServer).NewTxnRequest(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/fastchain.FastChain/NewTxnRequest",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FastChainServer).NewTxnRequest(ctx, req.(*Transaction))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _FastChain_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "fastchain.FastChain",
-	HandlerType: (*FastChainServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "NewTxnRequest",
-			Handler:    _FastChain_NewTxnRequest_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "fastchain.proto",
-}
-
-func init() { proto.RegisterFile("fastchain.proto", fileDescriptor_fastchain_6f8a0e3b928a9c84) }
-
-var fileDescriptor_fastchain_6f8a0e3b928a9c84 = []byte{
+var fileDescriptor_a2a6bde80318aa7d = []byte{
 	// 641 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x54, 0x5d, 0x6e, 0xdb, 0x38,
 	0x10, 0x5e, 0x59, 0x96, 0x1d, 0x8d, 0xbd, 0x9b, 0x05, 0x37, 0x08, 0x08, 0x63, 0xd1, 0x1a, 0x7a,
@@ -727,4 +662,78 @@ var fileDescriptor_fastchain_6f8a0e3b928a9c84 = []byte{
 	0xde, 0x99, 0xcd, 0x6f, 0xe9, 0x37, 0x33, 0x8f, 0xda, 0x7c, 0xab, 0x7f, 0xf2, 0xd7, 0xaa, 0x47,
 	0xbf, 0xb9, 0xd7, 0xbf, 0x02, 0x00, 0x00, 0xff, 0xff, 0x64, 0x84, 0x02, 0x27, 0xf9, 0x04, 0x00,
 	0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// FastChainClient is the client API for FastChain service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type FastChainClient interface {
+	//Send new transaction to presumed leader node
+	NewTxnRequest(ctx context.Context, in *Transaction, opts ...grpc.CallOption) (*GenericResp, error)
+}
+
+type fastChainClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewFastChainClient(cc *grpc.ClientConn) FastChainClient {
+	return &fastChainClient{cc}
+}
+
+func (c *fastChainClient) NewTxnRequest(ctx context.Context, in *Transaction, opts ...grpc.CallOption) (*GenericResp, error) {
+	out := new(GenericResp)
+	err := c.cc.Invoke(ctx, "/fastchain.FastChain/NewTxnRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// FastChainServer is the server API for FastChain service.
+type FastChainServer interface {
+	//Send new transaction to presumed leader node
+	NewTxnRequest(context.Context, *Transaction) (*GenericResp, error)
+}
+
+func RegisterFastChainServer(s *grpc.Server, srv FastChainServer) {
+	s.RegisterService(&_FastChain_serviceDesc, srv)
+}
+
+func _FastChain_NewTxnRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Transaction)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FastChainServer).NewTxnRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/fastchain.FastChain/NewTxnRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FastChainServer).NewTxnRequest(ctx, req.(*Transaction))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _FastChain_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "fastchain.FastChain",
+	HandlerType: (*FastChainServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "NewTxnRequest",
+			Handler:    _FastChain_NewTxnRequest_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "fastchain.proto",
 }

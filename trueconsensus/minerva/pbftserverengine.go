@@ -23,8 +23,8 @@ import (
 	"time"
 
 	"golang.org/x/sys/unix"
-	"trueconsensus/fastchain"
-	"trueconsensus/logging"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/fastchain"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/logging"
 )
 
 var (

@@ -34,9 +34,9 @@ import (
 	"sync"
 	"time"
 
-	"trueconsensus/common"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 
 	"github.com/alecthomas/repr"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"

@@ -22,7 +22,7 @@ import (
 	"math/rand"
 	"reflect"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"

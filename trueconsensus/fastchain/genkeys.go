@@ -26,7 +26,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"trueconsensus/common"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 )
