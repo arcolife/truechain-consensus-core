@@ -34,6 +34,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/ethereum/go-ethereum/trie"
 	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 
 	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
@@ -218,6 +219,8 @@ type Node struct {
 	txPool  *TxPool
 	genesis *pb.PbftBlock
 	tc      *pb.TrueChain
+
+	trie *trie.Trie
 }
 
 type reqCounter struct {
@@ -1282,7 +1285,7 @@ func (nd *Node) createBlockAndBroadcast() {
 				common.MyPrint(4, "Transacion count is %d", nd.txPool.GetTxCount())
 			}
 			parentHash := common.HashBlockHeader(nd.tc.LastBlockHeader)
-			txsHash := common.HashTxns(blockTxs)
+			txsHash := common.HashTxns(blockTxs, nd.trie)
 			header := NewPbftBlockHeader(nd.tc.LastBlockHeader.Number+1, 5000, int64(gasUsed), parentHash, txsHash)
 
 			block := NewPbftBlock(header, blockTxs)
@@ -1316,6 +1319,8 @@ func Make(cfg *Config, me int, port int, view int) *Node {
 	//rpc.Register(nd)
 	nd.cfg = cfg
 	nd.N = cfg.Network.N
+	fmt.Println("Creating new trie with N = ", me)
+	nd.trie = common.NewTrieDB(me)
 	nd.f = (nd.N - 1) / 3
 	common.MyPrint(2, "Going to tolerate %d adversaries\n", nd.f)
 	nd.lowBound = 0
@@ -1349,10 +1354,8 @@ func Make(cfg *Config, me int, port int, view int) *Node {
 	common.MyPrint(2, "Initial Node Config %+v\n", nd)
 	nd.cfg.Logistics.LD = path.Join(GetCWD(), "logs/")
 	// kfpath := path.Join(cfg.Logistics.KD, filename)
-
-	nd.genesis = GetDefaultGenesisBlock()
+	nd.genesis = GetDefaultGenesisBlock(nd.trie)
 	common.MyPrint(0, "Genesis block generated: %x\n\n", nd.genesis.Header.TxnsHash)
-
 	nd.newTrueChain()
 
 	// Buffered channel of size 1 contains the newly committed block to be added to

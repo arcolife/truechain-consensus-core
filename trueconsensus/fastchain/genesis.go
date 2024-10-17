@@ -20,13 +20,14 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/ethereum/go-ethereum/trie"
 	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 
 	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 )
 
 // GetDefaultGenesisBlock returns a default genesis block
-func GetDefaultGenesisBlock() *pb.PbftBlock {
+func GetDefaultGenesisBlock(trie *trie.Trie) *pb.PbftBlock {
 	txns := make([]*pb.Transaction, 0)
 	genesisBlock := &pb.PbftBlock{}
 	genesisBlockHeader := &pb.PbftBlockHeader{
@@ -35,7 +36,7 @@ func GetDefaultGenesisBlock() *pb.PbftBlock {
 		GasUsed:    0,
 		Timestamp:  time.Now().Unix(),
 		ParentHash: []byte(strconv.FormatInt(0, 16)),
-		TxnsHash:   common.HashTxns(txns),
+		TxnsHash:   common.HashTxns(txns, trie),
 	}
 
 	genesisBlock.Header = genesisBlockHeader

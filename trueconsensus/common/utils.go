@@ -136,22 +136,15 @@ func (h Hash) Generate(rand *rand.Rand, size int) reflect.Value {
 	return reflect.ValueOf(h)
 }
 
-// func NewDB(N int) *ethdb.LDBDatabase {
-// 	dir := fmt.Sprintf("./data-%d", N)
-// 	MakeDirIfNot(dir)
-// 	db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
-// 	if err != nil {
-// 		log.Fatalf("Failed to create LevelDB database: %v", err)
-// 	}
-// 	return db
-// }
-
-// HashTxns returns a hash of all the transactions using Merkle Patricia tries
-// func (s *Server) HashTxns(transactions []string) (string, error) {
-func HashTxns(txns []*pb.Transaction) []byte {
-	// dir := "./data"
-	// random dir
-	dir := fmt.Sprintf("./data-%d", rand.Int())
+func NewTrieDB(N int) *trie.Trie {
+	// dir := fmt.Sprintf("./data-%d", N)
+	// MakeDirIfNot(dir)
+	// db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
+	// if err != nil {
+	// 	log.Fatalf("Failed to create LevelDB database: %v", err)
+	// }
+	// return db
+	dir := fmt.Sprintf("./data-%d", N)
 	MakeDirIfNot(dir)
 	db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
 	if err != nil {
@@ -160,26 +153,31 @@ func HashTxns(txns []*pb.Transaction) []byte {
 	}
 	diskdb := triedb.NewDatabase(db, triedb.HashDefaults)
 	trie := trie.NewEmpty(diskdb)
+	return trie
+}
+
+// HashTxns returns a hash of all the transactions using Merkle Patricia tries
+// func (s *Server) HashTxns(transactions []string) (string, error) {
+func HashTxns(txns []*pb.Transaction, trie *trie.Trie) []byte {
 	// Check if the transactions slice is nil or empty
 	if txns == nil || len(txns) == 0 {
-		fmt.Println("Error initializing Trie:", err)
-		// return nil // or return an empty byte slice, depending on your use case
+		fmt.Println("txns is nil or empty, return empty hash")
 		return []byte{}
 	}
 
 	for i, txn := range txns {
 		if txn == nil {
-			// Log an error or skip the nil transaction
 			fmt.Printf("Warning: Transaction at index %d is nil\n", i)
 			continue
 		}
 		val, err := proto.Marshal(txn)
 		if err != nil {
-			// Handle the error, e.g., log it and continue
 			fmt.Printf("Error marshalling transaction at index %d: %v\n", i, err)
 			continue
 		}
 		// trie.Update(proto.EncodeVarint(uint64(i)), val)
+		// print trie
+		// fmt.Printf("Trie: %v\n", trie)
 		var buf [10]byte
 		n := binary.PutUvarint(buf[:], uint64(i))
 		trie.MustUpdate(buf[:n], val)
