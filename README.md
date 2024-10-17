@@ -1,3 +1,23 @@
+- [truechain-consensus-core](#truechain-consensus-core)
+- [Building the source](#building-the-source)
+  - [Build](#build)
+    - [Building it all with a shell script](#building-it-all-with-a-shell-script)
+    - [Building it all with hmake and docker](#building-it-all-with-hmake-and-docker)
+      - [Step 1](#step-1)
+      - [Step 2](#step-2)
+      - [Step 3](#step-3)
+    - [Run](#run)
+    - [CI](#ci)
+      - [managing a missing dependency](#managing-a-missing-dependency)
+    - [Deployment](#deployment)
+    - [Benchmark](#benchmark)
+  - [Feedback](#feedback)
+  - [Contributing](#contributing)
+  - [Community / Mailing lists](#community--mailing-lists)
+    - [On Social Media](#on-social-media)
+  - [LICENSE](#license)
+
+
 # truechain-consensus-core
 TrueChain Consensus Protocol
 
@@ -9,13 +29,24 @@ TrueChain Consensus Protocol
 
 ## Build
 
-### Step 1
+### Building it all with a shell script
+
+Additionally, you could choose to build without using containers. For a very basic sanity test, run the following:
+
+```
+./support/scripts/build.sh {linux/darwin}
+```
+
+Note: you could also use `darwin` as an argument to build.sh instead of `linux` to get an OSX binary. Support for more will be extended soon.
+
+
+### Building it all with hmake and docker
+
+#### Step 1
 
 Install [Docker](https://docs.docker.com/install/) and [HyperMake](http://evo-cloud.github.io/hmake/quickguide/install/).
 
 Make sure you have hmake in your `$GOBIN` path.
-
-#### Building it all with hmake and docker
 
 This project uses:
 
@@ -37,7 +68,7 @@ The first time, it would download:
 The binaries would be available in `bin/`'s platform-specific folders.
 
 
-### Step 2
+#### Step 2
 
 ```
 git clone https://github.com/truechain/truechain-consensus-core.git
@@ -52,7 +83,7 @@ go get -u github.com/truechain/truechain-consensus-core
 ```
 
 
-### Step 3
+#### Step 3
 
 Make sure you have `$GOBIN` in `$PATH`:
 
@@ -89,6 +120,9 @@ $ ./bin/{linux/darwin}/pbft-client -h
 Usage of pbft-client:
   -numquest int
     	number of requests (default 10)
+
+# example
+./bin/darwin/pbft-client -numquest 100
 ```
 
 
@@ -149,17 +183,6 @@ gvt fetch github.com/fatih/color
 This would add a folder `trueconsensus/vendor` if not already present, and would also generate/append to `trueconsensus/vendor/manifest`.
 
 Note that `gvt fetch <package_name>` updates the file `src/vendor/manifest`.
-
-#### Building it all with a shell script
-
-Additionally, you could choose to build without using containers. For a very basic sanity test, run the following:
-
-```
-./support/scripts/build.sh {linux/darwin}
-```
-
-Note: you could also use `darwin` as an argument to build.sh instead of `linux` to get an OSX binary. Support for more will be extended soon.
-
 
 ### Deployment
 

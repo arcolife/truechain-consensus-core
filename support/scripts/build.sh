@@ -27,8 +27,10 @@ OUTDIR="bin/$GOOS"
 mkdir -p "$OUTDIR"
 
 if [ "$GOOS" = "darwin" ]; then
-    export CC=o64-clang
-    export CXX=o64-clang++
+    # export CC=o64-clang
+    # export CXX=o64-clang++
+    export CC=clang
+    export CXX=clang++
 fi
 
 if [ "$GOOS" = "windows" ]; then
