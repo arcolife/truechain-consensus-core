@@ -25,14 +25,14 @@ import (
 	"strconv"
 	"time"
 
-	"trueconsensus/common"
-	"trueconsensus/fastchain"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/fastchain"
 
 	"context"
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 )

@@ -20,9 +20,9 @@ import (
 	"strconv"
 	"time"
 
-	"trueconsensus/common"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 )
 
 // GetDefaultGenesisBlock returns a default genesis block

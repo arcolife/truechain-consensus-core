@@ -5,9 +5,17 @@ export GOOS=$1
 export GOARCH=amd64
 export CGO_ENABLED=1
 
+# protoc -I trueconsensus/fastchain/proto/ \
+#           trueconsensus/fastchain/proto/fastchain.proto \
+#           --go_out=plugins=grpc:trueconsensus/fastchain/proto/
+
+# brew install protoc-gen-go
+# protoc --version
+# libprotoc 28.2
 protoc -I trueconsensus/fastchain/proto/ \
-          trueconsensus/fastchain/proto/fastchain.proto \
-          --go_out=plugins=grpc:trueconsensus/fastchain/proto/
+  trueconsensus/fastchain/proto/fastchain.proto \
+  --go_out=. \
+  --go-grpc_out=.
 
 git_commit_hash() {
     echo $(git rev-parse --short HEAD)

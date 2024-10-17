@@ -20,7 +20,7 @@ import (
 	"container/heap"
 	"sync"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 )
 
 // nonceHeap is a heap.Interface implementation over 64bit unsigned integers for

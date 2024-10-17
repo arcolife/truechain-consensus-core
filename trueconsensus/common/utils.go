@@ -18,17 +18,22 @@ package common
 
 import (
 	"fmt"
+	"log"
 	"math/big"
 	"math/rand"
 	"reflect"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/core/rawdb"
 	"github.com/ethereum/go-ethereum/trie"
-	"github.com/golang/protobuf/proto"
-	// "trueconsensus/fastchain"
+	"google.golang.org/protobuf/proto"
+
+	"github.com/ethereum/go-ethereum/triedb"
+	// "github.com/ethereum/go-ethereum/ethdb"
+	// "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain"
 
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 
@@ -36,11 +41,13 @@ import (
 	"io/ioutil"
 
 	"crypto/x509"
+	"encoding/binary"
 	"encoding/hex"
 	"encoding/pem"
-	"github.com/fatih/color"
 	"io"
 	"os"
+
+	"github.com/fatih/color"
 	// "strings"
 )
 
@@ -129,12 +136,53 @@ func (h Hash) Generate(rand *rand.Rand, size int) reflect.Value {
 	return reflect.ValueOf(h)
 }
 
+// func NewDB(N int) *ethdb.LDBDatabase {
+// 	dir := fmt.Sprintf("./data-%d", N)
+// 	MakeDirIfNot(dir)
+// 	db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
+// 	if err != nil {
+// 		log.Fatalf("Failed to create LevelDB database: %v", err)
+// 	}
+// 	return db
+// }
+
 // HashTxns returns a hash of all the transactions using Merkle Patricia tries
+// func (s *Server) HashTxns(transactions []string) (string, error) {
 func HashTxns(txns []*pb.Transaction) []byte {
-	trie := new(trie.Trie)
+	// dir := "./data"
+	// random dir
+	dir := fmt.Sprintf("./data-%d", rand.Int())
+	MakeDirIfNot(dir)
+	db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
+	if err != nil {
+		// log.Fatal(err)
+		log.Fatalf("Failed to create LevelDB database: %v", err)
+	}
+	diskdb := triedb.NewDatabase(db, triedb.HashDefaults)
+	trie := trie.NewEmpty(diskdb)
+	// Check if the transactions slice is nil or empty
+	if txns == nil || len(txns) == 0 {
+		fmt.Println("Error initializing Trie:", err)
+		// return nil // or return an empty byte slice, depending on your use case
+		return []byte{}
+	}
+
 	for i, txn := range txns {
-		val, _ := proto.Marshal(txn)
-		trie.Update(proto.EncodeVarint(uint64(i)), val)
+		if txn == nil {
+			// Log an error or skip the nil transaction
+			fmt.Printf("Warning: Transaction at index %d is nil\n", i)
+			continue
+		}
+		val, err := proto.Marshal(txn)
+		if err != nil {
+			// Handle the error, e.g., log it and continue
+			fmt.Printf("Error marshalling transaction at index %d: %v\n", i, err)
+			continue
+		}
+		// trie.Update(proto.EncodeVarint(uint64(i)), val)
+		var buf [10]byte
+		n := binary.PutUvarint(buf[:], uint64(i))
+		trie.MustUpdate(buf[:n], val)
 	}
 
 	return trie.Hash().Bytes()
@@ -185,7 +233,7 @@ func CheckErr(e error) {
 	}
 }
 
-//MakeDirIfNot handles dir creation operations
+// MakeDirIfNot handles dir creation operations
 func MakeDirIfNot(dir string) {
 	_, err := os.Stat(dir)
 	if os.IsNotExist(err) {

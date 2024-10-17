@@ -34,9 +34,9 @@ import (
 	"sync"
 	"time"
 
-	"trueconsensus/common"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 
-	pb "trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 
 	"github.com/alecthomas/repr"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
@@ -247,7 +247,8 @@ type MsgType string
 // RequestInner represents the core structure of a request
 // Reqtype maps to following iota'ed constants
 // ( typePrePrepare, typePrepare, typeCommit, typeInit,
-//   typeRequest, typeViewChange, typeNewView, typeCheckpoint )
+//
+//	typeRequest, typeViewChange, typeNewView, typeCheckpoint )
 type RequestInner struct {
 	ID        int
 	Seq       int
@@ -1252,6 +1253,15 @@ func (nd *Node) createInternalPbftReq(proposedBlock *pb.PbftBlock) Request {
 }
 
 func (nd *Node) createBlockAndBroadcast() {
+	// // Ensure the Trie and other necessary components are initialized
+	// if nd.trie == nil {
+	// 	nd.trie = new(Trie) // or however the Trie is supposed to be initialized
+	// }
+
+	// Check other components
+	if nd.txPool == nil {
+		nd.txPool = newTxPool()
+	}
 	// This go routine creates the slices of block-size length and creates the block
 	// for broadcasting once the previous block has been committed
 	blockSize := nd.cfg.Blocksize
@@ -1362,7 +1372,7 @@ func Make(cfg *Config, me int, port int, view int) *Node {
 	fi2, err2 := os.Create(path.Join(nd.cfg.Logistics.LD, "PBFTBuffer"+strconv.Itoa(nd.ID)+".txt"))
 	if err2 == nil {
 		nd.commitLog = fi2
-	} else {
+	} else if err != nil {
 		panic(err)
 	}
 

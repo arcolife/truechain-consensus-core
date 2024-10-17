@@ -22,12 +22,14 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"trueconsensus/common"
 
-	pb "trueconsensus/fastchain/proto"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
+
+	fastchain "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
+	pb "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain/proto"
 
 	"google.golang.org/grpc"
-	// "trueconsensus/fastchain"
+	// "github.com/truechain/truechain-consensus-core/trueconsensus/fastchain"
 )
 
 // Server defines the base properties of a pbft node server
@@ -40,6 +42,7 @@ type Server struct {
 }
 
 type fastChainServer struct {
+	fastchain.UnimplementedFastChainServer
 	pbftSv *Server
 }
 

@@ -32,3 +32,5 @@ logs/
 *.pub
 
 typescript
+data/
+data-*/

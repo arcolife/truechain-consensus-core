@@ -21,7 +21,7 @@ import (
 	"net/http"
 	"net/rpc"
 	"strconv"
-	"trueconsensus/common"
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
 )
 
 // MakeTransportations is a placeholder. All network related functions

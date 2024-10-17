@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package fastchain;
+option go_package = "trueconsensus/fastchain/proto;fastchain";
 
 //Interface exposed by pbft committee nodes
 service FastChain {

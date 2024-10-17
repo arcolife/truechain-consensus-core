@@ -18,14 +18,15 @@ package pbft
 
 import (
 	"fmt"
-	"gopkg.in/ini.v1"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
 	"strings"
-	"trueconsensus/common"
+
+	"github.com/truechain/truechain-consensus-core/trueconsensus/common"
+	"gopkg.in/ini.v1"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -97,10 +98,10 @@ type Tunables struct {
 // TRUE_LOG_DIR='/var/log/truechain' - contains all things ledger and logs
 // TRUE_LIB_DIR='/var/lib/truechain' - contains keys and all things db
 type Logistics struct {
-	LedgerLoc string
-	LD        string
-	ServerLog string
-	ClientLog string
+	LedgerLoc string // ledger location
+	LD        string // data directory
+	ServerLog string // server log file
+	ClientLog string // client log file
 	KD        string // key directory where pub/priva ECDSA keys are stored
 }
 
@@ -167,7 +168,7 @@ func DefaultTunables() *Tunables {
 func LoadLogisticsCfg() (*ini.File, error) {
 	path := os.Getenv(GeneralConfigEnv)
 	if path == "" {
-		path = "/etc/truechain/logistics_bft.cfg"
+		path = "config/logistics_bft.cfg"
 	}
 	configData, err := ini.Load(path)
 	if err != nil {
@@ -182,7 +183,7 @@ func (cfg *Config) LoadTunablesConfig() error {
 
 	path := os.Getenv(TunablesConfigEnv)
 	if path == "" {
-		path = "/etc/truechain/tunables_bft.yaml"
+		path = "config/tunables_bft.yaml"
 	}
 
 	yamlFile, err := ioutil.ReadFile(path)
@@ -233,7 +234,7 @@ func (cfg *Config) ValidateConfig(cfgData *ini.File) error {
 	// TODO: refer to validate yaml from browbeat
 	cfg.Network.HostsFile = os.Getenv(PeerNetworkEnv)
 	if cfg.Network.HostsFile == "" {
-		cfg.Network.HostsFile = "/etc/truechain/hosts"
+		cfg.Network.HostsFile = "config/hosts"
 	}
 	cfg.GetIPConfigs()
 	cfg.Network.NumKeys = len(cfg.Network.IPList)
@@ -281,10 +282,10 @@ func GetPbftConfig() *Config {
 	err = cfg.ValidateConfig(cfgData)
 	CheckConfigErr(err)
 
-	log.Println("---> using following configurations for project:")
-	// log.Printf("---> using following configurations:\n%+v\n\n", cfg)
-	yamlDebugInfo, _ := yaml.Marshal(&cfg)
-	fmt.Printf("%+v\n", string(yamlDebugInfo))
+	// log.Println("---> using following configurations for project:")
+	// // log.Printf("---> using following configurations:\n%+v\n\n", cfg)
+	// yamlDebugInfo, _ := yaml.Marshal(&cfg)
+	// fmt.Printf("%+v\n", string(yamlDebugInfo))
 
 	return cfg
 }
