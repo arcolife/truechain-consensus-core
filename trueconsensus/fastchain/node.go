@@ -1286,6 +1286,10 @@ func (nd *Node) createBlockAndBroadcast() {
 			}
 			parentHash := common.HashBlockHeader(nd.tc.LastBlockHeader)
 			txsHash := common.HashTxns(blockTxs, nd.trie)
+			// print the hash of the trie
+			fmt.Printf("Trie hash: %x\n", nd.trie.Hash())
+			// print the root of the trie
+			fmt.Printf("Trie root: %x\n", nd.trie.Hash())
 			header := NewPbftBlockHeader(nd.tc.LastBlockHeader.Number+1, 5000, int64(gasUsed), parentHash, txsHash)
 
 			block := NewPbftBlock(header, blockTxs)

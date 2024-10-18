@@ -28,6 +28,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/rawdb"
+
+	// "github.com/ethereum/go-ethereum/core/state"
+
 	"github.com/ethereum/go-ethereum/trie"
 	"google.golang.org/protobuf/proto"
 
@@ -136,28 +139,75 @@ func (h Hash) Generate(rand *rand.Rand, size int) reflect.Value {
 	return reflect.ValueOf(h)
 }
 
-func NewTrieDB(N int) *trie.Trie {
-	// dir := fmt.Sprintf("./data-%d", N)
-	// MakeDirIfNot(dir)
-	// db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
-	// if err != nil {
-	// 	log.Fatalf("Failed to create LevelDB database: %v", err)
-	// }
-	// return db
+func storeNewRootHash(N int, trieInstance *trie.Trie) common.Hash {
 	dir := fmt.Sprintf("./data-%d", N)
-	MakeDirIfNot(dir)
 	db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
 	if err != nil {
-		// log.Fatal(err)
+		log.Fatalf("Failed to store new root hash: %v", err)
+	}
+	diskdb := triedb.NewDatabase(db, triedb.HashDefaults)
+	trieInstance = trie.NewEmpty(diskdb)
+	rootHash := trieInstance.Hash()
+	db.Put([]byte("root-hash"), rootHash.Bytes())
+	return rootHash
+}
+
+func NewInMemDb() *triedb.Database {
+	// state, _ := state.New(types.EmptyRootHash, state.NewDatabaseForTesting())
+	return triedb.NewDatabase(rawdb.NewMemoryDatabase(), nil)
+}
+
+func NewTrieDB(N int) *trie.Trie {
+	var trieInstance *trie.Trie
+	dir := fmt.Sprintf("./data-%d", N)
+	created := MakeDirIfNot(dir)
+	db, err := rawdb.NewLevelDBDatabase(dir, 16, 16, "leveldb", false)
+	if err != nil {
 		log.Fatalf("Failed to create LevelDB database: %v", err)
 	}
 	diskdb := triedb.NewDatabase(db, triedb.HashDefaults)
-	trie := trie.NewEmpty(diskdb)
-	return trie
+	trieInstance = trie.NewEmpty(diskdb)
+	if created {
+		// trieInstance = trie.NewEmpty(diskdb)
+		fmt.Println("Creating new trie")
+	} else {
+		fmt.Println("Reading existing trie")
+		// var parent = types.EmptyRootHash
+		// if len(trieInstance.roots) != 0 {
+		// 	parent = trieInstance.roots[len(trieInstance.roots)-1]
+		// }
+
+		// // read from existing db
+		// // trieInstance, err = trie.New(diskdb)
+		// // Read the rootHash from the database
+		// rootHashKey := []byte("root-hash") // This is where you stored your root hash previously
+		// rootHashData, err := db.Get(rootHashKey)
+		// if err != nil || rootHashData == nil {
+		// 	log.Fatalf("Failed to retrieve root hash: %v", err)
+		// }
+
+		// // Convert the stored data to a hash
+		// rootHash := common.BytesToHash(rootHashData)
+
+		// // Load the existing trie from the root hash
+		// var trieID = &trie.ID{
+		// 	Root:      rootHash,
+		// 	Owner:     common.Hash{},
+		// 	StateRoot: rootHash,
+		// }
+		// trieInstance, err = trie.New(trieID, diskdb)
+		// if err != nil {
+		// 	log.Fatalf("Failed to load trie from existing database: %v", err)
+		// }
+	}
+	// rootHash := storeNewRootHash(N, trieInstance)
+	// fmt.Printf("Trie hash: %x\n", rootHash)
+	// // print the root of the trie
+	// fmt.Printf("Trie root: %x\n", rootHash)
+	return trieInstance
 }
 
 // HashTxns returns a hash of all the transactions using Merkle Patricia tries
-// func (s *Server) HashTxns(transactions []string) (string, error) {
 func HashTxns(txns []*pb.Transaction, trie *trie.Trie) []byte {
 	// Check if the transactions slice is nil or empty
 	if txns == nil || len(txns) == 0 {
@@ -176,8 +226,6 @@ func HashTxns(txns []*pb.Transaction, trie *trie.Trie) []byte {
 			continue
 		}
 		// trie.Update(proto.EncodeVarint(uint64(i)), val)
-		// print trie
-		// fmt.Printf("Trie: %v\n", trie)
 		var buf [10]byte
 		n := binary.PutUvarint(buf[:], uint64(i))
 		trie.MustUpdate(buf[:n], val)
@@ -232,12 +280,14 @@ func CheckErr(e error) {
 }
 
 // MakeDirIfNot handles dir creation operations
-func MakeDirIfNot(dir string) {
+func MakeDirIfNot(dir string) bool {
 	_, err := os.Stat(dir)
 	if os.IsNotExist(err) {
 		err := os.Mkdir(dir, 0750)
 		CheckErr(err)
+		return true
 	}
+	return false
 }
 
 // FetchPublicKeyBytes fetches ECDSA public key in []byte form
